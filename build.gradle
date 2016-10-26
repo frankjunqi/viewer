@@ -50,6 +50,15 @@ android {
 		}
 	}
 
+/*	splits {
+		abi {
+			enable true
+			reset()
+			include 'armeabi-v7a','x86','x86-64','arm64-v8a','mips64' //select ABIs to build APKs for
+			universalApk true //generate an additional APK that contains all the ABIs
+		}
+	}*/
+
 	/* This is important, it will run lint checks but won't abort build */
 	lintOptions {
 		abortOnError false
@@ -60,7 +69,7 @@ android {
 import org.apache.tools.ant.taskdefs.condition.Os
 def ndkBuildPath = plugins.getPlugin('com.android.application').sdkHandler.getNdkFolder().absolutePath + File.separator + 'ndk-build'
 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-	ndkBuildPath +='.cmd'
+	//ndkBuildPath +='.cmd'
 }
 
 //  This task builds the native part
@@ -71,22 +80,22 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 task buildNative(type: Exec,description: 'Compile JNI source via NDK') {
 	println('executing buildNative')
 //	commandLine ndkBuildPath, '-C', file('.').absolutePath, ' FZ_ENABLE_GPRF=1'
-	commandLine ndkBuildPath, '-C', file('.').absolutePath
+	//commandLine ndkBuildPath, '-C', file('.').absolutePath
 }
 
 //  This task cleans the native part
 
 task cleanNative(type: Exec, description: 'Clean JNI object files') {
 	println('executing cleanNative')
-	commandLine ndkBuildPath, '-C', file('.').absolutePath, 'clean'
+	//commandLine ndkBuildPath, '-C', file('.').absolutePath, 'clean'
 }
 
 //  cleaning should also include cleaning native
 
-clean.dependsOn 'cleanNative'
+//clean.dependsOn 'cleanNative'
 
 //  building should include native
 
 tasks.withType(JavaCompile) {
-	compileTask -> compileTask.dependsOn buildNative
+	//compileTask -> compileTask.dependsOn buildNative
 }
